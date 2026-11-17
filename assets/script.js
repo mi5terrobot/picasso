@@ -43,6 +43,8 @@ document.querySelectorAll('.beispiel').forEach(beispiel => {
 
   zurueck.addEventListener('click', () => zeige(aktuell - 1));
   weiter.addEventListener('click', () => zeige(aktuell + 1));
+    // Von außen aufrufbar, damit die Section beim Öffnen neu startet
+  beispiel.zuruecksetzen = () => zeige(0);
   zeige(0);
 });
 
@@ -75,6 +77,10 @@ function zeigeAnsicht() {
 
   inhalt.hidden = istSection;
   sections.forEach(sec => { sec.hidden = sec !== ziel; });
+
+  // Geöffnete Section immer bei Schritt 1 beginnen lassen
+  if (istSection && ziel.zuruecksetzen) ziel.zuruecksetzen();
+
   window.scrollTo(0, 0);
 }
 
