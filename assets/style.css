@@ -233,3 +233,9 @@ footer.wrap {
     background: rgba(0, 0, 0, .05);
     opacity: .6;
 }
+
+/* Touch-Geräte (Handy, Tablet): wischen statt Buttons, nur Punkte zeigen */
+@media (hover: none) and (pointer: coarse) {
+    .navigation > button { display: none; }
+    .navigation { justify-content: center; }
+}
