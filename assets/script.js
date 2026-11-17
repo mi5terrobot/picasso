@@ -1,99 +1,73 @@
 // 1. Formeln rendern (nur wenn Temml geladen wurde)
 if (window.temml) {
-    document.querySelectorAll(".tex").forEach(el => {
-        temml.render(el.textContent, el);
-    });
+  document.querySelectorAll('.tex').forEach(el => temml.render(el.textContent, el));
 }
 
-// 2. Schritt-Navigation in jeder Section (wie bisher)
-document.querySelectorAll('.beispiel').forEach(beispiel => {
-  const schritte = beispiel.querySelectorAll('.schritte > .schritt');
-  const nav = beispiel.querySelector('.navigation');
-  if (!nav) return;
+const inhalt = document.getElementById('inhalt');
+const toc = document.getElementById('toc');
+const sections = document.querySelectorAll('main section');
 
-  nav.innerHTML = `
-    <button type="button" class="zurueck">‹ Zurück</button>
-    <span class="punkte"></span>
-    <button type="button" class="weiter">Weiter ›</button>`;
+// 2. Jede Section aufbauen: Inhaltsverzeichnis, ✕-Link, Schritte und Navigation
+sections.forEach(sec => {
+  const titel = sec.querySelector('h2');
+  toc.insertAdjacentHTML('beforeend',
+    `<li><a href="#${sec.id}">${titel.innerHTML.replace(/<br\s*\/?>/gi, ' ')}</a></li>`);
+  titel.innerHTML = `<span>${titel.innerHTML}</span>` +
+    `<a href="#" class="schliessen" aria-label="Zum Inhaltsverzeichnis">✕</a>`;
 
-  const zurueck = nav.querySelector('.zurueck');
-  const weiter = nav.querySelector('.weiter');
-  const punkte = nav.querySelector('.punkte');
+  // Schritte in einen Rahmen packen und Navigation darunter setzen
+  const schritte = [...sec.querySelectorAll('.schritt')];
+  if (!schritte.length) return;
+  const rahmen = document.createElement('div');
+  rahmen.className = 'schritte';
+  schritte[0].before(rahmen);
+  rahmen.append(...schritte);
+
+  rahmen.insertAdjacentHTML('afterend', `
+    <div class="navigation">
+      <button type="button">‹ Zurück</button>
+      <span class="punkte">${schritte.map((_, i) =>
+        `<button type="button" class="punkt" aria-label="Schritt ${i + 1}"></button>`).join('')}</span>
+      <button type="button">Weiter ›</button>
+    </div>`);
+
+  const [zurueck, ...rest] = sec.querySelectorAll('.navigation button');
+  const weiter = rest.pop();
+  const punkte = rest;
   let aktuell = 0;
 
-  schritte.forEach((_, i) => {
-    const punkt = document.createElement('button');
-    punkt.type = 'button';
-    punkt.className = 'punkt';
-    punkt.setAttribute('aria-label', `Schritt ${i + 1}`);
-    punkt.addEventListener('click', () => zeige(i));
-    punkte.append(punkt);
-  });
-
-  function zeige(i) {
+  sec.zeige = i => {
     aktuell = i;
     schritte.forEach((s, j) => { s.hidden = j !== i; });
-    punkte.querySelectorAll('.punkt').forEach((p, j) => {
+    punkte.forEach((p, j) => {
       p.classList.toggle('aktiv', j === i);
       p.toggleAttribute('aria-current', j === i);
     });
     zurueck.disabled = i === 0;
     weiter.disabled = i === schritte.length - 1;
-  }
+  };
 
-  zurueck.addEventListener('click', () => zeige(aktuell - 1));
-  weiter.addEventListener('click', () => zeige(aktuell + 1));
-    // Von außen aufrufbar, damit die Section beim Öffnen neu startet
-  beispiel.zuruecksetzen = () => zeige(0);
-  zeige(0);
+  zurueck.onclick = () => sec.zeige(aktuell - 1);
+  weiter.onclick = () => sec.zeige(aktuell + 1);
+  punkte.forEach((p, i) => { p.onclick = () => sec.zeige(i); });
 });
 
-// 3. Inhaltsverzeichnis und Schließen-Link erzeugen
-const sections = document.querySelectorAll('section.beispiel');
-const inhalt = document.getElementById('inhalt');
-const toc = document.getElementById('toc');
-
-sections.forEach(sec => {
-  const thema = sec.querySelector('.thema');
-  const titelHtml = thema ? thema.innerHTML : sec.id;
-
-  // Eintrag im Inhaltsverzeichnis (<br> wird zu Leerzeichen)
-  toc.insertAdjacentHTML('beforeend',
-    `<li><a href="#${sec.id}">${titelHtml.replace(/<br\s*\/?>/gi, ' ')}</a></li>`);
-
-  // Titel in <span> packen, damit Flexbox ihn als Ganzes behandelt,
-  // und rechts einen echten Link zum Inhaltsverzeichnis setzen
-  if (thema) {
-    thema.innerHTML =
-      `<span>${titelHtml}</span><a href="#" class="schliessen" aria-label="Zum Inhaltsverzeichnis">✕</a>`;
-  }
-});
-
-// 4. Ansicht je nach Hash umschalten
+// 3. Ansicht je nach Hash umschalten (Section startet immer bei Schritt 1)
 function zeigeAnsicht() {
-  const id = decodeURIComponent(location.hash.slice(1));
-  const ziel = id ? document.getElementById(id) : null;
-  const istSection = !!ziel && ziel.matches('section.beispiel');
+  const ziel = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const istSection = [...sections].includes(ziel);
 
   inhalt.hidden = istSection;
   sections.forEach(sec => { sec.hidden = sec !== ziel; });
-
-  // Geöffnete Section immer bei Schritt 1 beginnen lassen
-  if (istSection && ziel.zuruecksetzen) ziel.zuruecksetzen();
-
+  if (istSection) ziel.zeige(0);
   window.scrollTo(0, 0);
-}
-
-// 5. Datum der letzten Änderung im Footer anzeigen
-const aktualisiert = document.getElementById('aktualisiert');
-if (aktualisiert) {
-  const d = new Date(document.lastModified);
-  const zwei = n => String(n).padStart(2, '0');
-  aktualisiert.dateTime = d.toISOString();
-  aktualisiert.textContent =
-    `${zwei(d.getDate())}/${zwei(d.getMonth() + 1)}/${d.getFullYear()}, ` +
-    `${zwei(d.getHours())}:${zwei(d.getMinutes())}`;
 }
 
 window.addEventListener('hashchange', zeigeAnsicht);
 zeigeAnsicht();
+
+// 4. Datum der letzten Änderung im Footer (Format: DD/MM/YYYY, hh:mm)
+const d = new Date(document.lastModified);
+const aktualisiert = document.getElementById('aktualisiert');
+aktualisiert.dateTime = d.toISOString();
+aktualisiert.textContent = d.toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' });

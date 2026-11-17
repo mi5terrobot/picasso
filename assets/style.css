@@ -1,44 +1,37 @@
-* {
-    box-sizing: border-box;
+@font-face {
+    font-family: "TI Nspire Keys CX";
+    src: url("TINspireKeysCX.woff2");
 }
 
-html {
-    font-size: clamp(12px, 1rem + 0.5vw, 14px);
-    /* Berechnet die Schriftgröße dynamisch */
-}
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { font-size: clamp(12px, 1rem + 0.5vw, 14px); }
 
 body {
     margin: 0;
+    font-family: "Lato", sans-serif;
 }
 
-math {
-    font-family: "Latin Modern Math", math;
-}
+math { font-family: "Latin Modern Math", math; }
 
 img {
-    max-width: 90%;
-    /* 20% kleiner als der p-Tag */
-    height: auto;
     display: block;
+    max-width: 90%;
+    height: auto;
     margin: 10px auto;
-    /* Zentriert das Bild horizontal */
     border-radius: .5em;
 }
 
 .wrap {
     max-width: 450px;
     margin: 20px auto;
-    border: 0px solid gainsboro;
 }
 
-[hidden] {
-    display: none !important;
-}
+/* === Inhaltsverzeichnis === */
 
-#inhalt {
-    padding: .5rem;
-    margin: .5rem;
-}
+#inhalt { padding: .5rem; margin: .5rem; }
 
 #inhalt h1 {
     margin: 0 0 .5rem;
@@ -61,49 +54,35 @@ img {
     text-decoration: none;
 }
 
-#toc a:hover {
-    background: rgba(0, 0, 255, 0.05);
-}
+#toc a:hover { background: rgba(0, 0, 255, .05); }
 
-.beispiel {
+/* === Themen-Seiten === */
 
-    * {
-        margin: 0;
-        line-height: 2;
-    }
+section {
+    line-height: 2;
 
-    >* {
-        border: 0px solid red;
+    * { margin: 0; }
+
+    > * {
         padding: .5rem;
         margin: .5rem;
     }
 
-    img {
-        max-width: 80%;
-        /* 20% kleiner als der p-Tag */
-        border: 1px solid #888;
-        margin: 10px auto;
-        /* Zentriert das Bild horizontal */
-    }
-
-    .thema {
+    h2 {
         display: flex;
-        /* Aktiviert Flexbox, damit justify-content wirkt */
         justify-content: space-between;
         border-bottom: 1px solid #666;
-        font-weight: 600;
         font-size: larger;
-        line-height: 1em !important;
     }
 
     .schliessen {
+        padding-left: 1rem;
         color: inherit;
         text-decoration: none;
-        padding-left: 1rem;
     }
 
     .aufgabe {
-        background-color: rgba(0, 0, 255, 0.1);
+        background: rgba(0, 0, 255, .1);
         border-left: 3px solid blue;
     }
 
@@ -113,81 +92,81 @@ img {
         font-weight: bold;
     }
 
-    .schritte,
-    .navigation {
-        border: 1px solid gainsboro;
-    }
-
     ol {
         list-style: none;
-        list-style-position: inside;
         counter-reset: item;
         padding: 0;
     }
 
-    ol li {
+    li::before {
         counter-increment: item;
-    }
-
-    ol li::before {
         content: counter(item, lower-alpha) ") ";
         margin-right: .3rem;
     }
 
-    .key {
+    img {
+        max-width: 80%;
+        border: 1px solid #888;
+        margin: 10px auto;
+    }
+
+    kbd {
+        font: italic 1em "Lato", sans-serif;
+        letter-spacing: .2em;
+        padding: .1em;
         border: 1px solid #999;
         border-radius: .1em;
-        padding: .1em;
         background: #f9f9f9;
-        font-style: italic;
-        letter-spacing: .2em;
     }
 
-    .cas {
-        font: normal 1.3em "TI Nspire Keys CX";
-    }
+    .cas { font: normal 1.3em "TI Nspire Keys CX"; }
 
     .lsg {
-        border: 1px solid green;
-        background: lightgreen;
-        border-radius: .1em;
         padding: .2em;
+        border: 1px solid green;
+        border-radius: .1em;
+        background: lightgreen;
     }
+
+    .schritte,
+    .navigation { border: 1px solid gainsboro; }
 
     .navigation {
         display: flex;
         align-items: center;
         justify-content: space-between;
-
-        button:disabled {
-            opacity: .4;
-            cursor: default;
-        }
-
-        .punkte {
-            display: flex;
-            gap: .5rem;
-        }
-
-        .punkt {
-            width: 2rem;
-            height: 2rem;
-            padding: 0;
-            border: none;
-            border-radius: 50%;
-            background: #ccc;
-        }
-
-        .punkt.aktiv {
-            background: #333;
-        }
     }
+
+    button { line-height: inherit; }
+
+    button:disabled {
+        opacity: .4;
+        cursor: default;
+    }
+
+    .punkte {
+        display: flex;
+        gap: .5rem;
+    }
+
+    .punkt {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background: #ccc;
+    }
+
+    .punkt.aktiv { background: #333; }
 }
+
+/* === Footer === */
 
 footer.wrap {
     margin-top: 0;
-    text-align: center;
-    font-size: 0.8rem;
-    opacity: 0.6;
     padding: 1rem 0;
+    text-align: center;
+    font-size: .8rem;
+    opacity: .6;
 }
