@@ -26,7 +26,7 @@ img {
 
 .wrap {
     max-width: 450px;
-    margin: 20px auto;
+    margin: 10px auto;
 }
 
 /* === Inhaltsverzeichnis === */
@@ -113,7 +113,8 @@ section {
     kbd {
         font: italic 1em "Lato", sans-serif;
         letter-spacing: .2em;
-        padding: .1em;
+        padding: .2rem;
+        margin: .2rem;
         border: 1px solid #999;
         border-radius: .1em;
         background: #f9f9f9;
@@ -122,7 +123,8 @@ section {
     .cas { font: normal 1.3em "TI Nspire Keys CX"; }
 
     .lsg {
-        padding: .2em;
+        padding: .2rem;
+        margin: .2rem;
         border: 1px solid green;
         border-radius: .1em;
         background: lightgreen;
@@ -154,12 +156,14 @@ section {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        height: 3rem;
+        background: rgba(255, 0, 0, .1);
     }
 
-    button { line-height: inherit; }
+    button { line-height: 1.4rem; }
 
     button:disabled {
-        opacity: .4;
+        opacity: .7;
         cursor: default;
     }
 
@@ -169,12 +173,14 @@ section {
     }
 
     .punkt {
-        width: 2rem;
-        height: 2rem;
+        width: 1rem;
+        height: 1rem;
         padding: 0;
         border: none;
         border-radius: 50%;
-        background: #ccc;
+        background: #fff;
+        border: 1px solid #111;
+        opacity: .8;
     }
 
     .punkt.aktiv { background: #333; }
@@ -183,9 +189,11 @@ section {
 /* === Footer === */
 
 footer.wrap {
-    margin-top: 0;
-    padding: 1rem 0;
+    max-width: 438px;
     text-align: center;
     font-size: .8rem;
+    background: rgba(0, 0, 0, .05);
+    margin: 0 auto;
+    padding: .5rem 0;
     opacity: .6;
 }
