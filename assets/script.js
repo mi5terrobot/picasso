@@ -36,17 +36,24 @@ sections.forEach(sec => {
   const punkte = rest;
   let aktuell = 0;
 
-  sec.zeige = i => {
-    aktuell = i;
-    schritte.forEach((s, j) => { s.hidden = j !== i; });
+  // Punkte und Buttons an den aktuellen Schritt anpassen
+  function markiere() {
+    aktuell = Math.round(rahmen.scrollLeft / rahmen.clientWidth) || 0;
     punkte.forEach((p, j) => {
-      p.classList.toggle('aktiv', j === i);
-      p.toggleAttribute('aria-current', j === i);
+      p.classList.toggle('aktiv', j === aktuell);
+      p.toggleAttribute('aria-current', j === aktuell);
     });
-    zurueck.disabled = i === 0;
-    weiter.disabled = i === schritte.length - 1;
+    zurueck.disabled = aktuell === 0;
+    weiter.disabled = aktuell === schritte.length - 1;
+  }
+
+  // Zu Schritt i scrollen (beim Wischen passiert das von selbst)
+  sec.zeige = (i, behavior = 'smooth') => {
+    rahmen.scrollTo({ left: i * rahmen.clientWidth, behavior });
+    markiere();
   };
 
+  rahmen.addEventListener('scroll', markiere);
   zurueck.onclick = () => sec.zeige(aktuell - 1);
   weiter.onclick = () => sec.zeige(aktuell + 1);
   punkte.forEach((p, i) => { p.onclick = () => sec.zeige(i); });
@@ -59,12 +66,21 @@ function zeigeAnsicht() {
 
   inhalt.hidden = istSection;
   sections.forEach(sec => { sec.hidden = sec !== ziel; });
-  if (istSection) ziel.zeige(0);
+  if (istSection) ziel.zeige(0, 'instant');
   window.scrollTo(0, 0);
 }
 
 window.addEventListener('hashchange', zeigeAnsicht);
+window.addEventListener('popstate', zeigeAnsicht);
 zeigeAnsicht();
+
+// ✕-Link: zurück zum Inhaltsverzeichnis ohne "#" in der Adresse
+document.addEventListener('click', e => {
+  if (!e.target.closest('.schliessen')) return;
+  e.preventDefault();
+  history.pushState(null, '', location.pathname);
+  zeigeAnsicht();
+});
 
 // 4. Datum der letzten Änderung im Footer (Format: DD/MM/YYYY, hh:mm)
 const d = new Date(document.lastModified);

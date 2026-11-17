@@ -113,8 +113,7 @@ section {
     kbd {
         font: italic 1em "Lato", sans-serif;
         letter-spacing: .2em;
-        padding: .2rem;
-        margin: .2rem;
+        padding: .1em;
         border: 1px solid #999;
         border-radius: .1em;
         background: #f9f9f9;
@@ -123,15 +122,33 @@ section {
     .cas { font: normal 1.3em "TI Nspire Keys CX"; }
 
     .lsg {
-        padding: .3rem;
-        margin: .3rem;
+        padding: .2em;
         border: 1px solid green;
-        border-radius: .2em;
+        border-radius: .1em;
         background: lightgreen;
     }
 
     .schritte,
     .navigation { border: 1px solid gainsboro; }
+
+    /* Schritte nebeneinander, per Wischen oder Buttons durchblättern */
+    .schritte {
+        display: flex;
+        align-items: flex-start;
+        padding: 0;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+    }
+
+    .schritte::-webkit-scrollbar { display: none; }
+
+    .schritt {
+        flex: 0 0 100%;
+        padding: .5rem;
+        scroll-snap-align: start;
+    }
 
     .navigation {
         display: flex;
