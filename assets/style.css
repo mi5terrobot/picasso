@@ -9,6 +9,7 @@
     --linie-hell: gainsboro;
     --blau: blue;
     --gruen: green;
+    --navigation: rgba(255, 0, 0, .1);
 }
 
 @font-face {
@@ -189,7 +190,7 @@ section .schritte {
     align-items: center;
     justify-content: space-between;
     height: 3rem;
-    background: rgba(255, 0, 0, .1);
+    background: var(--navigation);
 }
 
 .navigation button { line-height: 1.4rem; }
@@ -230,8 +231,7 @@ footer.wrap {
     padding: var(--abstand) 0;
     text-align: center;
     font-size: .8rem;
-    background: rgba(0, 0, 0, .05);
-    opacity: .6;
+    opacity: .4;
 }
 
 /* Touch-Geräte (Handy, Tablet): wischen statt Buttons, nur Punkte zeigen */
