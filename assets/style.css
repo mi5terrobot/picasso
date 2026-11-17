@@ -1,13 +1,31 @@
+/* ================================================================
+   Einstellungen: hier zentral Farben und Abstände ändern
+   ================================================================ */
+
+:root {
+    --breite: 450px;
+    --abstand: .5rem;
+    --linie: #666;
+    --linie-hell: gainsboro;
+    --blau: blue;
+    --gruen: green;
+}
+
 @font-face {
     font-family: "TI Nspire Keys CX";
     src: url("TINspireKeysCX.woff2");
 }
 
+
+/* ================================================================
+   Grundlagen
+   ================================================================ */
+
 * { box-sizing: border-box; }
 
 [hidden] { display: none !important; }
 
-html { font-size: clamp(12px, 1rem + 0.5vw, 14px); }
+html { font-size: clamp(12px, 1rem + .5vw, 14px); }
 
 body {
     margin: 0;
@@ -25,18 +43,21 @@ img {
 }
 
 .wrap {
-    max-width: 450px;
+    max-width: var(--breite);
     margin: 10px auto;
 }
 
-/* === Inhaltsverzeichnis === */
 
-#inhalt { padding: .5rem; margin: .5rem; }
+/* ================================================================
+   Inhaltsverzeichnis
+   ================================================================ */
+
+#inhalt { padding: var(--abstand); margin: var(--abstand); }
 
 #inhalt h1 {
-    margin: 0 0 .5rem;
-    padding: .5rem;
-    border-bottom: 1px solid #666;
+    margin: 0 0 var(--abstand);
+    padding: var(--abstand);
+    border-bottom: 1px solid var(--linie);
     font-size: larger;
 }
 
@@ -48,152 +69,167 @@ img {
 
 #toc a {
     display: block;
-    padding: .75rem .5rem;
-    border-bottom: 1px solid gainsboro;
+    padding: .75rem var(--abstand);
+    border-bottom: 1px solid var(--linie-hell);
     color: inherit;
     text-decoration: none;
 }
 
 #toc a:hover { background: rgba(0, 0, 255, .05); }
 
-/* === Themen-Seiten === */
 
-section {
-    line-height: 2;
+/* ================================================================
+   Themen-Seiten: Grundgerüst
+   ================================================================ */
 
-    * { margin: 0; }
+section { line-height: 2; }
 
-    > * {
-        padding: .5rem;
-        margin: .5rem;
-    }
+section * { margin: 0; }
 
-    h2 {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #666;
-        font-size: larger;
-    }
-
-    .schliessen {
-        padding-left: 1rem;
-        color: inherit;
-        text-decoration: none;
-    }
-
-    .aufgabe {
-        background: rgba(0, 0, 255, .1);
-        border-left: 3px solid blue;
-    }
-
-    .aufgabe::before {
-        content: "Beispiel:";
-        color: darkblue;
-        font-weight: bold;
-    }
-
-    ol {
-        list-style: none;
-        counter-reset: item;
-        padding: 0;
-    }
-
-    li::before {
-        counter-increment: item;
-        content: counter(item, lower-alpha) ") ";
-        margin-right: .3rem;
-    }
-
-    img {
-        max-width: 80%;
-        border: 1px solid #888;
-        margin: 10px auto;
-    }
-
-    kbd {
-        font: italic 1em "Lato", sans-serif;
-        letter-spacing: .2em;
-        padding: .2rem;
-        margin: .2rem;
-        border: 1px solid #999;
-        border-radius: .1em;
-        background: #f9f9f9;
-    }
-
-    .cas { font: normal 1.3em "TI Nspire Keys CX"; }
-
-    .lsg {
-        padding: .2rem;
-        margin: .2rem;
-        border: 1px solid green;
-        border-radius: .1em;
-        background: lightgreen;
-    }
-
-    .schritte,
-    .navigation { border: 1px solid gainsboro; }
-
-    /* Schritte nebeneinander, per Wischen oder Buttons durchblättern */
-    .schritte {
-        display: flex;
-        align-items: flex-start;
-        padding: 0;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        overscroll-behavior-x: contain;
-        scrollbar-width: none;
-    }
-
-    .schritte::-webkit-scrollbar { display: none; }
-
-    .schritt {
-        flex: 0 0 100%;
-        padding: .5rem;
-        scroll-snap-align: start;
-    }
-
-    .navigation {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 3rem;
-        background: rgba(255, 0, 0, .1);
-    }
-
-    button { line-height: 1.4rem; }
-
-    button:disabled {
-        opacity: .7;
-        cursor: default;
-    }
-
-    .punkte {
-        display: flex;
-        gap: .5rem;
-    }
-
-    .punkt {
-        width: 1rem;
-        height: 1rem;
-        padding: 0;
-        border: none;
-        border-radius: 50%;
-        background: #fff;
-        border: 1px solid #111;
-        opacity: .8;
-    }
-
-    .punkt.aktiv { background: #333; }
+section > * {
+    padding: var(--abstand);
+    margin: var(--abstand);
 }
 
-/* === Footer === */
+section h2 {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--linie);
+    font-size: larger;
+}
+
+.schliessen {
+    padding-left: 1rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.aufgabe {
+    background: rgba(0, 0, 255, .1);
+    border-left: 3px solid var(--blau);
+}
+
+.aufgabe::before {
+    content: "Beispiel:";
+    color: darkblue;
+    font-weight: bold;
+}
+
+.aufgabe ol {
+    list-style: none;
+    counter-reset: item;
+    padding: 0;
+}
+
+.aufgabe li::before {
+    counter-increment: item;
+    content: counter(item, lower-alpha) ") ";
+    margin-right: .3rem;
+}
+
+section img {
+    max-width: 80%;
+    border: 1px solid #888;
+    margin: 10px auto;
+}
+
+
+/* ================================================================
+   Tasten und Lösungen
+   ================================================================ */
+
+section kbd {
+    font: italic 1em "Lato", sans-serif;
+    letter-spacing: .2em;
+    padding: .2rem;
+    margin: .2rem;
+    border: 1px solid #999;
+    border-radius: .1em;
+    background: #f9f9f9;
+}
+
+section .cas { font: normal 1.3em "TI Nspire Keys CX"; }
+
+section .lsg {
+    padding: .2rem;
+    margin: .2rem;
+    border: 1px solid var(--gruen);
+    border-radius: .1em;
+    background: lightgreen;
+}
+
+
+/* ================================================================
+   Schritte (wischbar) und Navigation
+   ================================================================ */
+
+.schritte,
+.navigation { border: 1px solid var(--linie-hell); }
+
+section .schritte {
+    display: flex;
+    align-items: flex-start;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+}
+
+.schritte::-webkit-scrollbar { display: none; }
+
+.schritt {
+    flex: 0 0 100%;
+    padding: var(--abstand);
+    scroll-snap-align: start;
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    background: rgba(255, 0, 0, .1);
+}
+
+.navigation button { line-height: 1.4rem; }
+
+.navigation button:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
+.punkte {
+    display: flex;
+    gap: var(--abstand);
+}
+
+.navigation .punkt {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: 1px solid #111;
+    border-radius: 50%;
+    background: #fff;
+    opacity: .8;
+}
+
+.navigation .punkt.aktiv { background: #333; }
+
+
+/* ================================================================
+   Footer: gleich breit wie die Kästen darüber
+   ================================================================ */
 
 footer.wrap {
-    max-width: 438px;
+    width: calc(100% - 2 * var(--abstand));
+    max-width: calc(var(--breite) - 2 * var(--abstand));
+    margin: 0 auto;
+    padding: var(--abstand) 0;
     text-align: center;
     font-size: .8rem;
     background: rgba(0, 0, 0, .05);
-    margin: 0 auto;
-    padding: .5rem 0;
     opacity: .6;
 }
