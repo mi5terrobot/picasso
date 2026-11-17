@@ -84,5 +84,16 @@ function zeigeAnsicht() {
   window.scrollTo(0, 0);
 }
 
+// 5. Datum der letzten Änderung im Footer anzeigen
+const aktualisiert = document.getElementById('aktualisiert');
+if (aktualisiert) {
+  const d = new Date(document.lastModified);
+  const zwei = n => String(n).padStart(2, '0');
+  aktualisiert.dateTime = d.toISOString();
+  aktualisiert.textContent =
+    `${zwei(d.getDate())}/${zwei(d.getMonth() + 1)}/${d.getFullYear()}, ` +
+    `${zwei(d.getHours())}:${zwei(d.getMinutes())}`;
+}
+
 window.addEventListener('hashchange', zeigeAnsicht);
 zeigeAnsicht();

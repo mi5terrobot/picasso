@@ -1,13 +1,27 @@
-* { box-sizing: border-box; }
-html { font-size: clamp(12px, 1rem + 0.5vw, 14px);   /* Berechnet die Schriftgröße dynamisch */ }
-body { margin: 0; }
-math { font-family: "Latin Modern Math", math; }
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: clamp(12px, 1rem + 0.5vw, 14px);
+    /* Berechnet die Schriftgröße dynamisch */
+}
+
+body {
+    margin: 0;
+}
+
+math {
+    font-family: "Latin Modern Math", math;
+}
 
 img {
-    max-width: 90%; /* 20% kleiner als der p-Tag */
+    max-width: 90%;
+    /* 20% kleiner als der p-Tag */
     height: auto;
     display: block;
-    margin: 10px auto; /* Zentriert das Bild horizontal */
+    margin: 10px auto;
+    /* Zentriert das Bild horizontal */
     border-radius: .5em;
 }
 
@@ -17,9 +31,14 @@ img {
     border: 0px solid gainsboro;
 }
 
-[hidden] { display: none !important; }
+[hidden] {
+    display: none !important;
+}
 
-#inhalt { padding: .5rem; margin: .5rem; }
+#inhalt {
+    padding: .5rem;
+    margin: .5rem;
+}
 
 #inhalt h1 {
     margin: 0 0 .5rem;
@@ -28,7 +47,11 @@ img {
     font-size: larger;
 }
 
-#toc { list-style: none; margin: 0; padding: 0; }
+#toc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
 #toc a {
     display: block;
@@ -38,33 +61,41 @@ img {
     text-decoration: none;
 }
 
-#toc a:hover { background: rgba(0,0,255,0.05); }
+#toc a:hover {
+    background: rgba(0, 0, 255, 0.05);
+}
 
 .beispiel {
 
-    * { margin: 0; line-height: 2; }
-    
-    > * {
+    * {
+        margin: 0;
+        line-height: 2;
+    }
+
+    >* {
         border: 0px solid red;
         padding: .5rem;
         margin: .5rem;
     }
 
     img {
-        max-width: 80%; /* 20% kleiner als der p-Tag */
+        max-width: 80%;
+        /* 20% kleiner als der p-Tag */
         border: 1px solid #888;
-        margin: 10px auto; /* Zentriert das Bild horizontal */
+        margin: 10px auto;
+        /* Zentriert das Bild horizontal */
     }
 
     .thema {
-        display: flex; /* Aktiviert Flexbox, damit justify-content wirkt */
+        display: flex;
+        /* Aktiviert Flexbox, damit justify-content wirkt */
         justify-content: space-between;
         border-bottom: 1px solid #666;
         font-weight: 600;
         font-size: larger;
         line-height: 1em !important;
     }
-    
+
     .schliessen {
         color: inherit;
         text-decoration: none;
@@ -72,7 +103,7 @@ img {
     }
 
     .aufgabe {
-        background-color: rgba(0,0,255,0.1);
+        background-color: rgba(0, 0, 255, 0.1);
         border-left: 3px solid blue;
     }
 
@@ -82,7 +113,8 @@ img {
         font-weight: bold;
     }
 
-    .schritte, .navigation {
+    .schritte,
+    .navigation {
         border: 1px solid gainsboro;
     }
 
@@ -92,9 +124,11 @@ img {
         counter-reset: item;
         padding: 0;
     }
+
     ol li {
         counter-increment: item;
     }
+
     ol li::before {
         content: counter(item, lower-alpha) ") ";
         margin-right: .3rem;
@@ -109,7 +143,9 @@ img {
         letter-spacing: .2em;
     }
 
-    .cas { font: normal 1.3em "TI Nspire Keys CX"; }
+    .cas {
+        font: normal 1.3em "TI Nspire Keys CX";
+    }
 
     .lsg {
         border: 1px solid green;
@@ -128,7 +164,10 @@ img {
             cursor: default;
         }
 
-        .punkte { display: flex; gap: .5rem; }
+        .punkte {
+            display: flex;
+            gap: .5rem;
+        }
 
         .punkt {
             width: 2rem;
@@ -139,6 +178,16 @@ img {
             background: #ccc;
         }
 
-        .punkt.aktiv { background: #333; }
+        .punkt.aktiv {
+            background: #333;
+        }
     }
+}
+
+footer.wrap {
+    margin-top: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    padding: 1rem 0;
 }
