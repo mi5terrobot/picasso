@@ -113,7 +113,8 @@ section {
     kbd {
         font: italic 1em "Lato", sans-serif;
         letter-spacing: .2em;
-        padding: .1em;
+        padding: .2rem;
+        margin: .2rem;
         border: 1px solid #999;
         border-radius: .1em;
         background: #f9f9f9;
@@ -122,9 +123,10 @@ section {
     .cas { font: normal 1.3em "TI Nspire Keys CX"; }
 
     .lsg {
-        padding: .2em;
+        padding: .3rem;
+        margin: .3rem;
         border: 1px solid green;
-        border-radius: .1em;
+        border-radius: .2em;
         background: lightgreen;
     }
 
