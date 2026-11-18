@@ -172,7 +172,10 @@ section h2 {
     margin-right: .3rem;
 }
 
+/* Platz für das Bild reservieren, bevor es geladen ist (Screenshots sind 4:3).
+   "auto" sorgt dafür, dass Bilder in anderem Format nicht verzerrt werden. */
 section img {
+    aspect-ratio: auto 4 / 3;
     max-width: 80%;
     border: 1px solid var(--linie);
     margin: 10px auto;
