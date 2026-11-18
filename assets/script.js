@@ -25,15 +25,15 @@ sections.forEach(sec => {
 
   rahmen.insertAdjacentHTML('afterend', `
     <div class="navigation">
-      <button type="button">‹ Zurück</button>
+      <button type="button" class="pfeil zurueck" aria-label="Zurück">‹</button>
       <span class="punkte">${schritte.map((_, i) =>
         `<button type="button" class="punkt" aria-label="Schritt ${i + 1}"></button>`).join('')}</span>
-      <button type="button">Weiter ›</button>
+      <button type="button" class="pfeil weiter" aria-label="Weiter">›</button>
     </div>`);
 
-  const [zurueck, ...rest] = sec.querySelectorAll('.navigation button');
-  const weiter = rest.pop();
-  const punkte = rest;
+  const zurueck = sec.querySelector('.navigation .zurueck');
+  const weiter = sec.querySelector('.navigation .weiter');
+  const punkte = [...sec.querySelectorAll('.navigation .punkt')];
   let aktuell = 0;
 
   // Punkte und Buttons an den aktuellen Schritt anpassen

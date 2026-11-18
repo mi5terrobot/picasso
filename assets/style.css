@@ -5,11 +5,21 @@
 :root {
     --breite: 450px;
     --abstand: .5rem;
-    --linie: #666;
-    --linie-hell: gainsboro;
-    --blau: blue;
-    --gruen: green;
-    --navigation: rgba(255, 0, 0, .1);
+    --radius: .5rem;
+
+    --text: #1f2328;
+    --text-leise: #6a737d;
+    --linie: #d0d7de;
+    --linie-hell: #eaeef2;
+    --flaeche: #f6f8fa;
+
+    --blau: #2f5fd0;
+    --blau-hell: #eef3fd;
+    --gruen: #2e7d32;
+    --gruen-hell: #e7f4e8;
+
+    --pille: #c9d1d9;          /* inaktive Punkte */
+    --pille-aktiv: var(--blau); /* aktiver Punkt (die Pille) */
 }
 
 @font-face {
@@ -31,6 +41,7 @@ html { font-size: clamp(12px, 1rem + .5vw, 14px); }
 body {
     margin: 0;
     font-family: "Lato", sans-serif;
+    color: var(--text);
 }
 
 math { font-family: "Latin Modern Math", math; }
@@ -40,13 +51,15 @@ img {
     max-width: 90%;
     height: auto;
     margin: 10px auto;
-    border-radius: .5em;
+    border-radius: var(--radius);
 }
 
 .wrap {
     max-width: var(--breite);
     margin: 10px auto;
 }
+
+button { font: inherit; color: inherit; }
 
 
 /* ================================================================
@@ -66,17 +79,35 @@ img {
     list-style: none;
     margin: 0;
     padding: 0;
+    counter-reset: thema;
 }
 
 #toc a {
-    display: block;
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
     padding: .75rem var(--abstand);
     border-bottom: 1px solid var(--linie-hell);
     color: inherit;
     text-decoration: none;
 }
 
-#toc a:hover { background: rgba(0, 0, 255, .05); }
+/* Laufende Nummer vorne, Pfeil hinten */
+#toc a::before {
+    counter-increment: thema;
+    content: counter(thema);
+    min-width: 1.2em;
+    color: var(--text-leise);
+    font-variant-numeric: tabular-nums;
+}
+
+#toc a::after {
+    content: "›";
+    margin-left: auto;
+    color: var(--text-leise);
+}
+
+#toc a:hover { background: var(--flaeche); }
 
 
 /* ================================================================
@@ -94,25 +125,38 @@ section > * {
 
 section h2 {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     border-bottom: 1px solid var(--linie);
     font-size: larger;
+    line-height: 1.4;
 }
 
 .schliessen {
-    padding-left: 1rem;
-    color: inherit;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: var(--text-leise);
+    font-size: 1rem;
     text-decoration: none;
 }
 
+.schliessen:hover { background: var(--flaeche); color: var(--text); }
+
 .aufgabe {
-    background: rgba(0, 0, 255, .1);
+    background: var(--blau-hell);
     border-left: 3px solid var(--blau);
+    border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 .aufgabe::before {
     content: "Beispiel:";
-    color: darkblue;
+    display: block;
+    color: var(--blau);
     font-weight: bold;
 }
 
@@ -130,7 +174,7 @@ section h2 {
 
 section img {
     max-width: 80%;
-    border: 1px solid #888;
+    border: 1px solid var(--linie);
     margin: 10px auto;
 }
 
@@ -140,37 +184,37 @@ section img {
    ================================================================ */
 
 section kbd {
-    font: italic 1em "Lato", sans-serif;
-    letter-spacing: .2em;
-    padding: .2rem;
-    margin: .2rem;
-    border: 1px solid #999;
-    border-radius: .1em;
-    background: #f9f9f9;
+    font: 1em "Lato", sans-serif;
+    letter-spacing: .05em;
+    padding: .1rem .4rem;
+    margin: 0 .1rem;
+    border: 1px solid var(--linie);
+    border-bottom-width: 2px;
+    border-radius: .3rem;
+    background: var(--flaeche);
 }
 
 section .cas { font: normal 1.3em "TI Nspire Keys CX"; }
 
 section .lsg {
-    padding: .2rem;
-    margin: .2rem;
+    padding: .1rem .4rem;
+    margin: 0 .1rem;
     border: 1px solid var(--gruen);
-    border-radius: .1em;
-    background: lightgreen;
+    border-radius: .3rem;
+    background: var(--gruen-hell);
 }
 
 
 /* ================================================================
-   Schritte (wischbar) und Navigation
+   Schritte (wischbar)
    ================================================================ */
-
-.schritte,
-.navigation { border: 1px solid var(--linie-hell); }
 
 section .schritte {
     display: flex;
     align-items: flex-start;
     padding: 0;
+    border: 1px solid var(--linie-hell);
+    border-radius: var(--radius);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     overscroll-behavior-x: contain;
@@ -185,39 +229,77 @@ section .schritte {
     scroll-snap-align: start;
 }
 
-.navigation {
+
+/* ================================================================
+   Navigation: Pfeile links/rechts, Pill-Pagination in der Mitte
+   ================================================================ */
+
+section .navigation {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 3rem;
-    background: var(--navigation);
+    padding: 0;
+    margin-top: 0;
 }
 
-.navigation button { line-height: 1.4rem; }
+/* Pfeil-Buttons: rund und dezent */
+.navigation .pfeil {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--linie);
+    border-radius: 50%;
+    background: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+}
 
-.navigation button:disabled {
-    opacity: .7;
+.navigation .pfeil:hover:not(:disabled) { background: var(--flaeche); }
+
+.navigation .pfeil:disabled {
+    opacity: .35;
     cursor: default;
 }
 
 .punkte {
     display: flex;
-    gap: var(--abstand);
+    align-items: center;
 }
 
+/* Der Button ist die (größere) Klickfläche, ::before die sichtbare Pille */
 .navigation .punkt {
     -webkit-appearance: none;
     appearance: none;
-    width: 1rem;
-    height: 1rem;
-    padding: 0;
-    border: 1px solid #111;
-    border-radius: 50%;
-    background: #fff;
-    opacity: .8;
+    padding: .6rem .2rem;
+    border: 0;
+    background: none;
+    cursor: pointer;
 }
 
-.navigation .punkt.aktiv { background: #333; }
+.navigation .punkt::before {
+    content: "";
+    display: block;
+    width: .5rem;
+    height: .5rem;
+    border-radius: 999px;
+    background: var(--pille);
+    transition: width .25s ease, background-color .25s ease;
+}
+
+.navigation .punkt:hover::before { background: var(--text-leise); }
+
+.navigation .punkt.aktiv::before {
+    width: 1.5rem;
+    background: var(--pille-aktiv);
+}
+
+.navigation :focus-visible {
+    outline: 2px solid var(--blau);
+    outline-offset: 2px;
+}
 
 
 /* ================================================================
@@ -231,11 +313,16 @@ footer.wrap {
     padding: var(--abstand) 0;
     text-align: center;
     font-size: .8rem;
-    opacity: .4;
+    color: var(--text-leise);
 }
 
-/* Touch-Geräte (Handy, Tablet): wischen statt Buttons, nur Punkte zeigen */
+/* Touch-Geräte (Handy, Tablet): wischen statt Buttons, nur Pillen zeigen */
 @media (hover: none) and (pointer: coarse) {
-    .navigation > button { display: none; }
-    .navigation { justify-content: center; }
+    .navigation .pfeil { display: none; }
+    section .navigation { justify-content: center; }
+}
+
+/* Wer reduzierte Bewegung eingestellt hat, bekommt keine Animation */
+@media (prefers-reduced-motion: reduce) {
+    .navigation .punkt::before { transition: none; }
 }
